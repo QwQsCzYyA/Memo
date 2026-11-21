@@ -1,0 +1,35 @@
+[Unit]
+Description=Memo 文本分享站（零依赖 Node.js 服务）
+Documentation=file://%h/memo/README.md
+After=network.target
+
+[Service]
+Type=simple
+# 下面两行按实际情况修改：
+#   ExecStart 里的路径要指向 server.js 所在目录
+#   WorkingDirectory 必须是项目目录（服务会 cd 进去）
+#
+# 如需与 Windows 端共用同一份数据，把 MEMO_DATA_DIR 指向共享目录即可，
+# 例如挂载 Windows 共享后：MEMO_DATA_DIR=/mnt/memo-data
+Environment=NODE_ENV=production
+Environment=PORT=3111
+Environment=HOST=0.0.0.0
+# Environment=MEMO_DATA_DIR=/var/lib/memo
+WorkingDirectory=%h/memo
+ExecStart=/usr/bin/node %h/memo/server.js
+ExecReload=/bin/kill -HUP $MAINPID
+
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/memo.log
+StandardError=append:/var/log/memo.log
+
+# 安全加固（不影响功能）
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=%h/memo/data
+
+[Install]
+WantedBy=multi-user.target
