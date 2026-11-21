@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Memo 文本分享站
-Comment=后台启动 Memo 并打开浏览器（首次使用需右键“允许启动”）
-Exec=/bin/bash -c 'D="%k"; D="${D#file://}"; cd "$D" && bash start.sh --daemon && (command -v xdg-open >/dev/null 2>&1 && xdg-open http://127.0.0.1:3111/ || true)'
-Icon=accessories-text-editor
-Terminal=true
-Categories=Network;Utility;
